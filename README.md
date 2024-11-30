@@ -11,4 +11,4 @@ Student Info
 
 * Student Name: Nguyen Ha Trung
 * Student ID: 22BI13436
-* Student Group ID: Not-for-now
+* Student Group ID:  3
