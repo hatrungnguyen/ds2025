@@ -1,0 +1,85 @@
+\documentclass{article}
+\usepackage{listings}
+\usepackage{amsmath}
+
+\title{File Transfer Using Sockets in Python}
+\author{Your Name}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+In this report, we present a simple implementation of file transfer using Python's socket programming. The implementation consists of two parts: a client that sends a file and a server that receives the file.
+
+\section{Client Implementation}
+The client is responsible for establishing a connection to the server and sending the specified file. Below is the code for the client:
+
+\begin{lstlisting}[language=Python]
+import socket
+
+def send_file(filename, host='127.0.0.1', port=65432):
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        s.connect((host, port))
+        with open(filename, "rb") as f:
+            data = f.read(1024)
+            while data:
+                s.sendall(data)
+                data = f.read(1024)
+                print("send done")
+        s.close()
+
+if __name__ == "__main__":
+    send_file("../1.txt")
+\end{lstlisting}
+
+\subsection{Code Explanation}
+\begin{itemize}
+    \item The code imports the \texttt{socket} library for network communication.
+    \item The \texttt{send\_file} function takes the filename, host, and port as arguments.
+    \item A socket is created and connected to the specified host and port.
+    \item The file is opened in binary read mode, and data is sent in chunks of 1024 bytes using a loop.
+    \item After sending the entire file, the connection is closed.
+\end{itemize}
+
+\section{Server Implementation}
+The server listens for incoming connections and receives the file sent by the client. Below is the code for the server:
+
+\begin{lstlisting}[language=Python]
+import socket
+
+def start_server(host='127.0.0.1', port=65432):
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        s.bind((host, port))
+        s.listen()
+        print("Listen =))))")
+        conn, add = s.accept()
+        with conn:
+            print(f"Connected by {add}")
+            with open("../1.txt", "wb") as f:
+                while True:
+                    data = conn.recv(1024)
+                    if not data:
+                        break
+                    f.write(data)
+            print("File received")
+        conn.close()
+
+if __name__ == "__main__":
+    start_server()
+\end{lstlisting}
+
+\subsection{Code Explanation}
+\begin{itemize}
+    \item The server code also imports the \texttt{socket} library.
+    \item The \texttt{start\_server} function binds to a specified host and port, and listens for incoming connections.
+    \item When a client connects, the server accepts the connection and begins receiving data.
+    \item The received data is written to a file in binary write mode until no more data is sent.
+    \item After the file transfer is complete, the connection is closed.
+\end{itemize}
+
+\section{Conclusion}
+This implementation demonstrates a basic file transfer mechanism using Python's socket programming. The client sends a file to the server, which receives and saves it. This example can be expanded for more robust error handling, support for multiple clients, and secure data transfer.
+
+\end{document}
