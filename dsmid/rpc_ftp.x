@@ -1,5 +1,6 @@
 /*
- * rpc_ftp.x: RPC Interface Definition for FTP Proxy
+ * DISTRIBUTED SYSTEMS - Group 3 - FTP Proxy via RPC
+ * RPC Interface Definition for FTP Proxy
  */
 program FTPPROXY_PROG {
     version FTPPROXY_VERS {
